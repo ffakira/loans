@@ -1,3 +1,5 @@
+### Setup project
+
 ### API Docs
 
 #### Register new account /api/register
@@ -54,6 +56,43 @@ curl -X POST http://localhost:8080/api/register \
   "password": "password123",
 }'
 ```
+
+#### Register new account /api/login
+<table>
+  <thead>
+    <tr>
+      <th>Field</th>
+      <th>Type</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        <code>provider</code>
+      </td>
+      <td>
+        <code>email</code>
+      </td>
+    </tr>
+    <tr>
+    <tr>
+      <td>
+        <code>email</code>
+      </td>
+      <td>
+        <code>string:required</code>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>password</code>
+      </td>
+      <td>
+        <code>string:required</code>
+      </td>
+    </tr>
+  </tbody>
+</table>
 
 ```sh
 curl -X POST http://localhost:8080/api/login \
