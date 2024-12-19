@@ -1,6 +1,11 @@
 import { Router, type Request, type Response } from "express";
-import { createUser, loginSchema, loginUserByProvider, registerSchema } from "../services/user.service";
-import { generateToken } from "../lib/utils";
+import {
+  createUser,
+  loginSchema,
+  loginUserByProvider,
+  registerSchema
+} from "@/services/user.service";
+import { generateToken } from "@/lib/utils";
 
 const router = Router();
 

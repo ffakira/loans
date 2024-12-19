@@ -1,10 +1,10 @@
 import express from "express";
 import cors from "cors";
 import helmet from "helmet";
-import Database from "./storage/db";
-
-import userRoutes from "./routes/user.routes";
 import mongoose from "mongoose";
+
+import Database from "@/storage/db";
+import userRoutes from "@/routes/user.routes";
 
 const PORT = process.env.PORT || 8080;
 const app = express();

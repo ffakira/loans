@@ -1,7 +1,7 @@
 import z from "zod";
 import mongoose from "mongoose";
-import User from "../schemas/user.schema";
-import { hashPassword, verifyPassword } from "../lib/utils";
+import User from "@/schemas/user.schema";
+import { hashPassword, verifyPassword } from "@/lib/utils";
 
 export const registerSchema = z.object({
   firstName: z.string(),

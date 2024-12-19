@@ -1,5 +1,26 @@
 ### Setup project
 
+**Tech Stack**
+* Express
+* [Bun](https://bun.sh/docs/installation)
+* Mongoose (Mongo) + zod
+* Jest + supertest
+* TypeScript
+
+By convention, the test follows the following convention:
+```sh
+# Original file with business logic
+original-file-name.routes.ts
+
+# File to be tested against
+origin-file-name.routes.test.ts
+```
+
+Rename `.env.example` to `.env`
+```sh
+mv .env.example .env
+```
+
 ### API Docs
 
 #### Register new account /api/register
@@ -57,7 +78,7 @@ curl -X POST http://localhost:8080/api/register \
 }'
 ```
 
-#### Register new account /api/login
+#### Login account /api/login
 <table>
   <thead>
     <tr>
