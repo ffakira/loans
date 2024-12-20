@@ -13,7 +13,7 @@ By convention, the test follows the following convention:
 original-file-name.routes.ts
 
 # File to be tested against
-origin-file-name.routes.test.ts
+original-file-name.routes.test.ts
 ```
 
 Rename `.env.example` to `.env`

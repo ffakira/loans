@@ -1,21 +1,9 @@
 import request from "supertest";
-import express from "express";
-import userRoutes from "@/routes/user.routes";
+import { app, SET_TIMEOUT, API } from "@tests/utils";
 
-const app = express();
-app.use(express.json());
-app.use("/api", userRoutes);
-
-const SET_TIMEOUT = 30_000;
-const API = {
-  register: "/api/register",
-  login: "/api/login",
-} as const;
-
-jest.mock('../lib/utils', () => ({
-  ...jest.requireActual('../lib/utils'),
-  generateToken: jest.fn(() => 'mocked-jwt-token'),
-  verifyToken: jest.fn(() => 'mocked-jwt-token'),
+jest.mock("../src/lib/utils", () => ({
+  ...jest.requireActual("../src/lib/utils"),
+  generateToken: jest.fn(() => "mocked-jwt-token"),
 }));
 
 describe(`User routes for ${API.register}`, () => {
