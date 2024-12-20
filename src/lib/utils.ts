@@ -22,14 +22,14 @@ export async function verifyPassword(password: string, hash: string): Promise<bo
 }
 
 export function generateToken(payload: string | object | Buffer): string | null {
-    return jwt.sign(payload, process.env.JWT_SECRET as string, { expiresIn: "1h" });
+  return jwt.sign(payload, process.env.JWT_SECRET as string, { expiresIn: "1h" });
 }
 
 export function verifyToken(token: string): string | object | null {
-    try {
-      return jwt.verify(token, process.env.JWT_SECRET as string);
-    } catch (err) {
-      console.error("[error@verifyToken]:", (err as Error).message);
-      return null;
-    } 
+  try {
+    return jwt.verify(token, process.env.JWT_SECRET as string);
+  } catch (err) {
+    console.error("[error@verifyToken]:", (err as Error).message);
+    return null;
+  }
 }

@@ -3,7 +3,7 @@ import {
   createUser,
   loginSchema,
   loginUserByProvider,
-  registerSchema
+  registerSchema,
 } from "@/services/user.service";
 import { generateToken } from "@/lib/utils";
 

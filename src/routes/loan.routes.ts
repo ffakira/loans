@@ -2,7 +2,7 @@ import { Router, type Request, type Response } from "express";
 import {
   createNewLoan,
   getLoansByUserId,
-  loanSchema
+  loanSchema,
 } from "@/services/loan.service";
 
 const router = Router();

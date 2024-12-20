@@ -85,7 +85,7 @@ export async function createUser(raw: z.infer<typeof registerSchema>) {
 export const loginSchema = z.object({
   email: z.string(),
   password: z.string(),
-  provider: z.enum(["email"])
+  provider: z.enum(["email"]),
 });
 
 export const userSchema = z.object({
@@ -110,49 +110,49 @@ export async function loginUserByProvider(raw: z.infer<typeof loginSchema>) {
     const data = input.data;
 
     switch (data.provider) {
-      case "email": {
-        const user = await User.findOne({ email: data.email }).populate(["email", "firstName", "lastName", "isVerified"]);
-        if (!user) {
-          return {
-            status: "error",
-            code: 401,
-            message: "Invalid email or password",
-          } as const;
-        }
-
-        const isValid = await verifyPassword(data.password, user.password);
-        
-        let userObj = user.toObject() as z.infer<typeof userSchema>;
-        userObj = {
-          email: userObj.email,
-          firstName: userObj.firstName,
-          lastName: userObj.lastName,
-          isVerified: userObj.isVerified,
-        };
-
-        if (!isValid) {
-          return {
-            status: "error",
-            code: 401,
-            message: "Invalid email or password",
-          } as const;
-        }
-
-        return {
-          status: "ok",
-          code: 200,
-          message: "User logged in",
-          data: userObj,
-        } as const;
-      }
-
-      default: {
+    case "email": {
+      const user = await User.findOne({ email: data.email }).populate(["email", "firstName", "lastName", "isVerified"]);
+      if (!user) {
         return {
           status: "error",
-          code: 400,
-          message: "Invalid provider",
+          code: 401,
+          message: "Invalid email or password",
         } as const;
       }
+
+      const isValid = await verifyPassword(data.password, user.password);
+
+      let userObj = user.toObject() as z.infer<typeof userSchema>;
+      userObj = {
+        email: userObj.email,
+        firstName: userObj.firstName,
+        lastName: userObj.lastName,
+        isVerified: userObj.isVerified,
+      };
+
+      if (!isValid) {
+        return {
+          status: "error",
+          code: 401,
+          message: "Invalid email or password",
+        } as const;
+      }
+
+      return {
+        status: "ok",
+        code: 200,
+        message: "User logged in",
+        data: userObj,
+      } as const;
+    }
+
+    default: {
+      return {
+        status: "error",
+        code: 400,
+        message: "Invalid provider",
+      } as const;
+    }
     }
   } catch (err) {
     console.error(`[error@loginUserByProvider]: Error logging in user, params: [${raw}]`, err);

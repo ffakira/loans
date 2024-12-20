@@ -108,7 +108,7 @@ describe(`User routes for ${API.register}`, () => {
         lastName: "Doe",
         email: "email@example.com",
         password: "password123",
-    });
+      });
 
     const response = await request(app)
       .post(API.register)
@@ -145,7 +145,7 @@ describe(`User routes for ${API.login}`, () => {
 
   afterEach(() => {
     console.error = jest.fn();
-  })
+  });
 
   it("should login successfully", async () => {
     const response = await request(app)
@@ -167,8 +167,8 @@ describe(`User routes for ${API.login}`, () => {
           firstName: "James",
           lastName: "Bond",
           isVerified: false,
-        }
-      })
+        },
+      }),
     );
     expect(response.body.token).toBe("mocked-jwt-token");
   });
@@ -195,7 +195,7 @@ describe(`User routes for ${API.login}`, () => {
       .send({
         provider: "email",
         email: "james.bond@example.com",
-        password: "missionfailed007"
+        password: "missionfailed007",
       });
 
     expect(response.status).toBe(401);

@@ -10,11 +10,11 @@ export default class Database {
       try {
         await mongoose.connect(process.env.MONGO_URI as string);
         Database.instance = mongoose.connection;
-  
+
         Database.instance.on("error", (error) => {
           console.error("Error connecting to Mongodb", error);
         });
-  
+
         Database.instance.once("open", () => {
           console.log("Connected to Mongodb");
         });

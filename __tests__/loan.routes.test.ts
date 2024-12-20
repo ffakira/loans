@@ -64,7 +64,7 @@ describe(`Loan routes for ${API.newLoan}`, () => {
           durationMonths: 24,
           status: "pending",
         }),
-      })
+      }),
     );
   });
 
