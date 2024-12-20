@@ -2,7 +2,7 @@ import { MongoMemoryServer } from "mongodb-memory-server";
 import mongoose from "mongoose";
 
 const DB_NAME = "test";
-const MONGO_VERSION = "4.4.0";
+const MONGO_VERSION = "7.0.5";
 let mongoServer: MongoMemoryServer;
 
 beforeAll(async () => {

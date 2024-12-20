@@ -16,7 +16,7 @@ jobs:
         with:
           db-connection-env-var: mongodb://localhost:27017
           run-command: bun run test
-          binary-version: 4.4.6
+          binary-version: 7.0.5
           instance-dbName: test
           instance-port: 27017
           instance-storageEngine: wiredTiger
