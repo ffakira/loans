@@ -5,6 +5,7 @@ import mongoose from "mongoose";
 
 import Database from "@/storage/db";
 import userRoutes from "@/routes/user.routes";
+import loanRoutes from "@/routes/loan.routes";
 
 const PORT = process.env.PORT || 8080;
 const app = express();
@@ -20,6 +21,7 @@ app.use(cors());
 Database.getInstance();
 
 app.use("/api", userRoutes);
+app.use("/api", loanRoutes);
 
 const server = app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
