@@ -16,6 +16,11 @@ original-file-name.routes.ts
 original-file-name.routes.test.ts
 ```
 
+Run unit tests in the `__tests__` folder.
+```
+bun run test
+```
+
 Rename `.env.example` to `.env`
 ```sh
 mv .env.example .env
