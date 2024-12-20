@@ -1,6 +1,7 @@
 ### Setup project
 
-[![ci](https://github.com/ffakira/loans/actions/workflows/ci.yml/badge.svg)](https://github.com/ffakira/loans/actions/workflows/ci.yml)
+[![ci](https://github.com/ffakira/loans/actions/workflows/ci.yml/badge.svg)](https://github.com/ffakira/loans/actions/workflows/ci.yml) [![Codecov](https://codecov.io/gh/ffakira/loans/branch/main/graph/badge.svg)](https://codecov.io/gh/ffakira/loans)
+
 
 **Tech Stack**
 * Express
