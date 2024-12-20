@@ -19,17 +19,12 @@ jobs:
         --health-retries 5
     steps:
       - name: checkout
-        uses: actions/checkout@v3
-
-      - name: install bun
-        run: |
-          curl -fsSL https://bun.sh/install | bash
-          export BUN_INSTALL="$HOME/.bun"
-          export PATH="$BUN_INSTALL/bin:$PATH"
-          bun --version
+        uses: actions/checkout@v4
+      - name: setup bun
+        uses: oven-sh/setup-bun@v2
 
       - name: install dependencies
         run: bun install
 
       - name: run tests
-        run: bun test
+        run: bun run test
