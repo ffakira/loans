@@ -13,6 +13,11 @@ const config: Config = {
   moduleNameMapper: pathsToModuleNameMapper(compilerOptions.paths, {
     prefix: "<rootDir>/",
   }),
+  collectCoverage: true,
+  coverageDirectory: "coverage",
+  collectCoverageFrom: ["src/**/*.ts"],
+  coveragePathIgnorePatterns: ["/node_modules/", "/__tests__/"],
+  coverageReporters: ["json", "text", "lcov", "clover"],
 };
 
 export default config;

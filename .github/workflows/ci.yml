@@ -50,5 +50,13 @@ jobs:
       - name: Install dependencies
         run: bun install
 
-      - name: Run tests
-        run: bun run test
+      - name: Run tests with coverage
+        run: bun run test --coverage
+
+      - name: Upload coverage report
+        uses: codecov/codecov-action@v2
+        with:
+          files: ./coverage/lcov.info
+          flags: unittests
+          name: codecov-umbrella
+

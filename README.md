@@ -1,5 +1,7 @@
 ### Setup project
 
+[![ci](https://github.com/ffakira/loans/actions/workflows/ci.yml/badge.svg)](https://github.com/ffakira/loans/actions/workflows/ci.yml)
+
 **Tech Stack**
 * Express
 * [Bun](https://bun.sh/docs/installation)
