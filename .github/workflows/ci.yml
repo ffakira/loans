@@ -4,29 +4,51 @@ on:
   push:
     branches:
       - main
+
 jobs:
   build:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        distro: [ubuntu-24.04]
     steps:
-      - name: checkout
+      - name: Load libssl cache
+        id: cache-ssl
+        uses: actions/cache@v4
+        with:
+          path: ~/ssl
+          key: libssl1.1
+
+      - name: Install libssl1.1
+        run: |
+          mkdir -p ~/ssl && cd ~/ssl
+          wget -nc https://ftp.debian.org/debian/pool/main/o/openssl/libssl1.1_1.1.1w-0+deb11u1_amd64.deb
+          sudo dpkg -i libssl1.1_1.1.1w-0+deb11u1_amd64.deb
+
+      - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Set up MongoDB Memory Server
-        uses: neofinancial/mongo-memory-server-action@v1.0.2
-        with:
-          db-connection-env-var: mongodb://localhost:27017
-          run-command: bun run test
-          binary-version: 7.0.5
-          instance-dbName: test
-          instance-port: 27017
-          instance-storageEngine: wiredTiger
-          mongoms-debug: 1
-
-      - name: setup bun
+      - name: Setup Bun
         uses: oven-sh/setup-bun@v2
 
-      - name: install dependencies
+      - name: Install dependencies
         run: bun install
 
-      - name: run tests
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        distro: [ubuntu-24.04]
+    needs: build
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+
+      - name: Install dependencies
+        run: bun install
+
+      - name: Run tests
         run: bun run test
