@@ -1,5 +1,6 @@
 import z from "zod";
 import Loan from "@/schemas/loan.schema";
+import mongoose from "mongoose";
 
 /**
  * @dev `principalAmount` is base in cents
@@ -104,6 +105,15 @@ export async function getLoansByUserId(userId: string) {
 
   try {
     const loans = await Loan.find({ userId });
+
+    if (!loans.length) {
+      return {
+        status: "error",
+        code: 404,
+        message: "No loans found",
+      } as const;
+    }
+
     return {
       status: "ok",
       code: 200,
@@ -111,6 +121,13 @@ export async function getLoansByUserId(userId: string) {
       data: loans,
     } as const;
   } catch (err) {
+    if (err instanceof mongoose.Error.CastError) {
+      return {
+        status: "error",
+        code: 400,
+        message: "Invalid user id",
+      } as const;
+    }
     console.error(
       `[error@getLoansByUserId]: Error retrieving loans, params: [${userId}]`,
       err,

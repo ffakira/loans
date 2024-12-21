@@ -58,6 +58,7 @@ export async function getLoanByUserIdHandle(
 ) {
   const { userId } = req.params;
 
+  /** @dev this should not occur since the route doesn't exist */
   if (!userId) {
     return res.status(400).json({
       status: "error",

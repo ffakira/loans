@@ -233,3 +233,89 @@ describe(`Loan routes for ${API.newLoan}`, () => {
     });
   });
 });
+
+describe(`Loan routes for ${API.getLoanByUserId}`, () => {
+  jest.setTimeout(SET_TIMEOUT);
+  let userId: Types.ObjectId | undefined;
+
+  beforeAll(async () => {
+    console.error = jest.fn();
+
+    await request(app).post(API.register).send({
+      firstName: "John",
+      lastName: "Doe",
+      email: "john.doe@example.com",
+      password: "password123",
+    });
+
+    const user = await User.findOne({ email: "john.doe@example.com" });
+    userId = user?._id;
+
+    expect(userId).toBeDefined();
+  });
+
+  afterAll(() => {
+    console.error = jest.fn();
+  });
+
+  it("should get loans by user ID", async () => {
+    const currentDate = new Date();
+    currentDate.setMonth(currentDate.getDate() + 1);
+    const now = formatDate(currentDate);
+    const future = formatDate(new Date(addMonths(currentDate, 24)));
+
+    await request(app).post(`${API.newLoan}/${userId}`).send({
+      startDate: now,
+      endDate: future,
+      durationMonths: 24,
+      principalAmount: 5000,
+      interestRate: 5,
+    });
+
+    const response = await request(app).get(`${API.getLoanByUserId}/${userId}`);
+
+    expect(response.status).toBe(200);
+    expect(response.body).toEqual(
+      expect.objectContaining({
+        status: "ok",
+        code: 200,
+        message: "Loans retrieved successfully",
+        data: expect.arrayContaining([
+          expect.objectContaining({
+            userId: userId!.toString(),
+            principalAmount: 5000 * 100,
+            interestRate: 5 * 100,
+            durationMonths: 24,
+            status: "pending",
+          }),
+        ]),
+      }),
+    );
+  });
+
+  it("should return user loan not found", async () => {
+    const response = await request(app).get(
+      `${API.getLoanByUserId}/6764fa5fcc04e16829aae689`,
+    );
+
+    expect(response.status).toBe(404);
+    expect(response.body).toEqual({
+      status: "error",
+      code: 404,
+      message: "No loans found",
+    });
+  });
+
+  it("should return invalid user ID", async () => {
+    const response = await request(app).get(
+      `${API.getLoanByUserId}/invalid-id`,
+    );
+
+    expect(response.status).toBe(400);
+    expect(response.body).toEqual({
+      status: "error",
+      code: 400,
+      message: "Invalid user id",
+    });
+  });
+});

@@ -7,6 +7,7 @@ export const API = {
   register: "/api/user/register",
   login: "/api/user/login",
   newLoan: "/api/loan/new/user",
+  getLoanByUserId: "/api/loan/user",
 } as const;
 
 const app = express();
