@@ -16,7 +16,12 @@ const config: Config = {
   collectCoverage: true,
   coverageDirectory: "coverage",
   collectCoverageFrom: ["src/**/*.ts"],
-  coveragePathIgnorePatterns: ["/node_modules/", "/__tests__/"],
+  coveragePathIgnorePatterns: [
+    "/node_modules/",
+    "/__tests__/",
+    "src/app.ts",
+    "src/storage/db.ts",
+  ],
   coverageReporters: ["json", "text", "lcov", "clover"],
 };
 
