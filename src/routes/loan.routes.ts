@@ -7,7 +7,7 @@ import {
 
 const router = Router();
 
-router.post("/loan/new/user/:userId", async (req: Request, res: Response) => {
+router.post("/new/user/:userId", async (req: Request, res: Response) => {
   const { userId } = req.params;
   let { startDate, endDate } = req.body;
   startDate = new Date(startDate);
@@ -42,7 +42,7 @@ router.post("/loan/new/user/:userId", async (req: Request, res: Response) => {
   }
 });
 
-router.get("/loan/user/:userId", async (req: Request, res: Response) => {
+router.get("/user/:userId", async (req: Request, res: Response) => {
   const { userId } = req.params;
 
   if (!userId) {

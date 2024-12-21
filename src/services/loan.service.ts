@@ -6,23 +6,28 @@ import Loan from "@/schemas/loan.schema";
  * @dev `interestRate` is in percentage base in 100
  * e.g.: 5% => 50
  */
-export const loanSchema = z.object({
-  userId: z.string(),
-  principalAmount: z.number()
-    .min(5000, { message: "Principal amount must be greater than 5000" })
-    .max(1_000_000, { message: "Principal amount cannot exceed 1_000_000" }),
-  interestRate: z.number()
-    .min(5, { message: "Interest rate must be at least 5%" })
-    .max(36, { message: "Interest rate must be at most 36%" }),
-  durationMonths: z.number()
-    .min(6, { message: "Duration must be at least 6 months" })
-    .max(60, { message: "Duration must be at most 60 months" }),
-  startDate: z.date(),
-  endDate: z.date(),
-}).refine((data) => data.startDate > new Date(), {
-  message: "Start date cannot be in the past",
-  path: ["startDate"],
-});
+export const loanSchema = z
+  .object({
+    userId: z.string(),
+    principalAmount: z
+      .number()
+      .min(5000, { message: "Principal amount must be greater than 5000" })
+      .max(1_000_000, { message: "Principal amount cannot exceed 1_000_000" }),
+    interestRate: z
+      .number()
+      .min(5, { message: "Interest rate must be at least 5%" })
+      .max(36, { message: "Interest rate must be at most 36%" }),
+    durationMonths: z
+      .number()
+      .min(6, { message: "Duration must be at least 6 months" })
+      .max(60, { message: "Duration must be at most 60 months" }),
+    startDate: z.date(),
+    endDate: z.date(),
+  })
+  .refine((data) => data.startDate > new Date(), {
+    message: "Start date cannot be in the past",
+    path: ["startDate"],
+  });
 
 export async function createNewLoan(raw: z.infer<typeof loanSchema>) {
   const input = loanSchema.safeParse(raw);
@@ -38,7 +43,10 @@ export async function createNewLoan(raw: z.infer<typeof loanSchema>) {
 
   try {
     const loanData = input.data;
-    const existingLoan = await Loan.findOne({ userId: loanData.userId, status: "pending"});
+    const existingLoan = await Loan.findOne({
+      userId: loanData.userId,
+      status: "pending",
+    });
     if (existingLoan) {
       return {
         status: "error",
@@ -73,7 +81,10 @@ export async function createNewLoan(raw: z.infer<typeof loanSchema>) {
       data: newLoan,
     } as const;
   } catch (err) {
-    console.error(`[error@createNewLoan]: Error creating loan, params: [${raw}]`, err);
+    console.error(
+      `[error@createNewLoan]: Error creating loan, params: [${raw}]`,
+      err,
+    );
     return {
       status: "error",
       code: 500,
@@ -100,7 +111,10 @@ export async function getLoansByUserId(userId: string) {
       data: loans,
     } as const;
   } catch (err) {
-    console.error(`[error@getLoansByUserId]: Error retrieving loans, params: [${userId}]`, err);
+    console.error(
+      `[error@getLoansByUserId]: Error retrieving loans, params: [${userId}]`,
+      err,
+    );
     return {
       status: "error",
       code: 500,

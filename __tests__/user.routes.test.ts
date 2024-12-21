@@ -21,14 +21,12 @@ describe(`User routes for ${API.register}`, () => {
   });
 
   it("should create a new user", async () => {
-    const response = await request(app)
-      .post(API.register)
-      .send({
-        firstName: "John",
-        lastName: "Doe",
-        email: "john.doe@example.com",
-        password: "password123",
-      });
+    const response = await request(app).post(API.register).send({
+      firstName: "John",
+      lastName: "Doe",
+      email: "john.doe@example.com",
+      password: "password123",
+    });
 
     expect(response.status).toBe(201);
     expect(response.body).toEqual({
@@ -39,14 +37,12 @@ describe(`User routes for ${API.register}`, () => {
   });
 
   it("should return a validation error for invalid input", async () => {
-    const response = await request(app)
-      .post(API.register)
-      .send({
-        firstName: "",
-        lastName: "Doe",
-        email: "invalid-email",
-        password: "123",
-      });
+    const response = await request(app).post(API.register).send({
+      firstName: "",
+      lastName: "Doe",
+      email: "invalid-email",
+      password: "123",
+    });
 
     expect(response.status).toBe(400);
     expect(response.body).toEqual({
@@ -57,23 +53,19 @@ describe(`User routes for ${API.register}`, () => {
   });
 
   it("should return a duplicate key error for existing email", async () => {
-    await request(app)
-      .post(API.register)
-      .send({
-        firstName: "John",
-        lastName: "Doe",
-        email: "john.doe@example.com",
-        password: "password123",
-      });
+    await request(app).post(API.register).send({
+      firstName: "John",
+      lastName: "Doe",
+      email: "john.doe@example.com",
+      password: "password123",
+    });
 
-    const response = await request(app)
-      .post(API.register)
-      .send({
-        firstName: "Jane",
-        lastName: "Doe",
-        email: "john.doe@example.com",
-        password: "password123",
-      });
+    const response = await request(app).post(API.register).send({
+      firstName: "Jane",
+      lastName: "Doe",
+      email: "john.doe@example.com",
+      password: "password123",
+    });
 
     expect(response.status).toBe(409);
     expect(response.body).toEqual({
@@ -84,14 +76,12 @@ describe(`User routes for ${API.register}`, () => {
   });
 
   it("should return validation error, for invalid input", async () => {
-    const response = await request(app)
-      .post(API.register)
-      .send({
-        firstName: "",
-        lastName: "Doe",
-        email: "invalid-email",
-        password: "123",
-      });
+    const response = await request(app).post(API.register).send({
+      firstName: "",
+      lastName: "Doe",
+      email: "invalid-email",
+      password: "123",
+    });
     expect(response.status).toBe(400);
     expect(response.body).toEqual({
       status: "error",
@@ -101,23 +91,19 @@ describe(`User routes for ${API.register}`, () => {
   });
 
   it("should return a dupkey error for email field", async () => {
-    await request(app)
-      .post(API.register)
-      .send({
-        firstName: "John",
-        lastName: "Doe",
-        email: "email@example.com",
-        password: "password123",
-      });
+    await request(app).post(API.register).send({
+      firstName: "John",
+      lastName: "Doe",
+      email: "email@example.com",
+      password: "password123",
+    });
 
-    const response = await request(app)
-      .post(API.register)
-      .send({
-        firstName: "Jane",
-        lastName: "Doe",
-        email: "email@example.com",
-        password: "password123",
-      });
+    const response = await request(app).post(API.register).send({
+      firstName: "Jane",
+      lastName: "Doe",
+      email: "email@example.com",
+      password: "password123",
+    });
     expect(response.status).toBe(409);
     expect(response.body).toEqual({
       status: "error",
@@ -133,14 +119,12 @@ describe(`User routes for ${API.login}`, () => {
   beforeEach(async () => {
     console.error = jest.fn();
 
-    await request(app)
-      .post(API.register)
-      .send({
-        firstName: "James",
-        lastName: "Bond",
-        email: "james.bond@email.com",
-        password: "supersecretmission007",
-      });
+    await request(app).post(API.register).send({
+      firstName: "James",
+      lastName: "Bond",
+      email: "james.bond@email.com",
+      password: "supersecretmission007",
+    });
   });
 
   afterEach(() => {
@@ -148,13 +132,11 @@ describe(`User routes for ${API.login}`, () => {
   });
 
   it("should login successfully", async () => {
-    const response = await request(app)
-      .post(API.login)
-      .send({
-        provider: "email",
-        email: "james.bond@email.com",
-        password: "supersecretmission007",
-      });
+    const response = await request(app).post(API.login).send({
+      provider: "email",
+      email: "james.bond@email.com",
+      password: "supersecretmission007",
+    });
 
     expect(response.status).toBe(200);
     expect(response.body).toEqual(
@@ -174,13 +156,11 @@ describe(`User routes for ${API.login}`, () => {
   });
 
   it("should return an error for invalid input", async () => {
-    const response = await request(app)
-      .post(API.login)
-      .send({
-        provider: "google",
-        email: "",
-        password: "",
-      });
+    const response = await request(app).post(API.login).send({
+      provider: "google",
+      email: "",
+      password: "",
+    });
     expect(response.status).toBe(400);
     expect(response.body).toEqual({
       status: "error",
@@ -190,13 +170,11 @@ describe(`User routes for ${API.login}`, () => {
   });
 
   it("should return an error for invalid email or password", async () => {
-    const response = await request(app)
-      .post(API.login)
-      .send({
-        provider: "email",
-        email: "james.bond@example.com",
-        password: "missionfailed007",
-      });
+    const response = await request(app).post(API.login).send({
+      provider: "email",
+      email: "james.bond@example.com",
+      password: "missionfailed007",
+    });
 
     expect(response.status).toBe(401);
     expect(response.body).toEqual({

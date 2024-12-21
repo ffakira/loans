@@ -1,19 +1,17 @@
-import loanRoutes from "@/routes/loan.routes";
-import userRoutes from "@/routes/user.routes";
+import routes from "@/routes/routes";
 import express from "express";
 
 export const SET_TIMEOUT = 30_000;
 
 export const API = {
-  register: "/api/register",
-  login: "/api/login",
+  register: "/api/user/register",
+  login: "/api/user/login",
   newLoan: "/api/loan/new/user",
 } as const;
 
 const app = express();
 app.use(express.json());
-app.use("/api", userRoutes);
-app.use("/api", loanRoutes);
+app.use("/api", routes);
 
 export { app };
 

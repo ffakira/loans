@@ -45,7 +45,10 @@ export async function createUser(raw: z.infer<typeof registerSchema>) {
   } catch (err) {
     /** @dev verify dup key for email */
     if ((err as Error & { code: number }).code === 11000) {
-      console.error(`[error@createUser]: Error creating user, params: [${raw}]`, err);
+      console.error(
+        `[error@createUser]: Error creating user, params: [${raw}]`,
+        err,
+      );
       return {
         status: "error",
         code: 409,
@@ -55,7 +58,10 @@ export async function createUser(raw: z.infer<typeof registerSchema>) {
 
     /** @dev verify mongoose schema validations */
     if (err instanceof mongoose.Error.ValidationError) {
-      console.error(`[error@createUser]: Error creating user, params: [${raw}]`, err);
+      console.error(
+        `[error@createUser]: Error creating user, params: [${raw}]`,
+        err,
+      );
       return {
         status: "error",
         code: 400,
@@ -65,14 +71,20 @@ export async function createUser(raw: z.infer<typeof registerSchema>) {
 
     /** @dev general error that have not been caught*/
     if (err instanceof mongoose.Error) {
-      console.error(`[error@createUser]: Error creating user, params: [${raw}]`, err);
+      console.error(
+        `[error@createUser]: Error creating user, params: [${raw}]`,
+        err,
+      );
       return {
         status: "error",
         code: 500,
         message: "Error creating user",
       } as const;
     } else {
-      console.error(`[error@createUser]: Error creating user, params: [${raw}]`, err);
+      console.error(
+        `[error@createUser]: Error creating user, params: [${raw}]`,
+        err,
+      );
       return {
         status: "error",
         code: 500,
@@ -110,52 +122,60 @@ export async function loginUserByProvider(raw: z.infer<typeof loginSchema>) {
     const data = input.data;
 
     switch (data.provider) {
-    case "email": {
-      const user = await User.findOne({ email: data.email }).populate(["email", "firstName", "lastName", "isVerified"]);
-      if (!user) {
+      case "email": {
+        const user = await User.findOne({ email: data.email }).populate([
+          "email",
+          "firstName",
+          "lastName",
+          "isVerified",
+        ]);
+        if (!user) {
+          return {
+            status: "error",
+            code: 401,
+            message: "Invalid email or password",
+          } as const;
+        }
+
+        const isValid = await verifyPassword(data.password, user.password);
+
+        let userObj = user.toObject() as z.infer<typeof userSchema>;
+        userObj = {
+          email: userObj.email,
+          firstName: userObj.firstName,
+          lastName: userObj.lastName,
+          isVerified: userObj.isVerified,
+        };
+
+        if (!isValid) {
+          return {
+            status: "error",
+            code: 401,
+            message: "Invalid email or password",
+          } as const;
+        }
+
         return {
-          status: "error",
-          code: 401,
-          message: "Invalid email or password",
+          status: "ok",
+          code: 200,
+          message: "User logged in",
+          data: userObj,
         } as const;
       }
 
-      const isValid = await verifyPassword(data.password, user.password);
-
-      let userObj = user.toObject() as z.infer<typeof userSchema>;
-      userObj = {
-        email: userObj.email,
-        firstName: userObj.firstName,
-        lastName: userObj.lastName,
-        isVerified: userObj.isVerified,
-      };
-
-      if (!isValid) {
+      default: {
         return {
           status: "error",
-          code: 401,
-          message: "Invalid email or password",
+          code: 400,
+          message: "Invalid provider",
         } as const;
       }
-
-      return {
-        status: "ok",
-        code: 200,
-        message: "User logged in",
-        data: userObj,
-      } as const;
-    }
-
-    default: {
-      return {
-        status: "error",
-        code: 400,
-        message: "Invalid provider",
-      } as const;
-    }
     }
   } catch (err) {
-    console.error(`[error@loginUserByProvider]: Error logging in user, params: [${raw}]`, err);
+    console.error(
+      `[error@loginUserByProvider]: Error logging in user, params: [${raw}]`,
+      err,
+    );
     if (err instanceof mongoose.Error.ValidationError) {
       return {
         status: "error",
